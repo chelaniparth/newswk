@@ -1,0 +1,21 @@
+{
+  "source": "US Retail & Leisure Business News",
+  "url": "https://example.com/us-retail-leisure-news/",
+  "days": 7,
+  "cutoff_date": "2025-12-23",
+  "total": 190,
+  "pages": 13,
+  "timestamp": "2025-12-23T10:00:00",
+  "articles": [
+    { "headline": "Walmart Inc. Reviews Post-Holiday Inventory Ahead of New Year Promotions", "url": "https://example.com/business-news/walmart-post-holiday-inventory-review-1238500201/", "page": 13 },
+    { "headline": "Target Corporation Analyzes Holiday Traffic Data to Refine 2026 Store Plans", "url": "https://example.com/business-news/target-holiday-traffic-analysis-1238500202/", "page": 13 },
+    { "headline": "Costco Wholesale Corporation Prepares Early-January Membership Campaign", "url": "https://example.com/business-news/costco-january-membership-campaign-1238500203/", "page": 13 },
+    { "headline": "BJ's Wholesale Club Holdings Highlights Strong Club Traffic in December", "url": "https://example.com/business-news/bjs-december-club-traffic-1238500204/", "page": 13 },
+    { "headline": "Sam's Club Evaluates Scan-and-Go Usage During Peak Holiday Week", "url": "https://example.com/business-news/sams-club-scan-and-go-usage-review-1238500205/", "page": 13 },
+    { "headline": "Academy Sports + Outdoors Plans Clearance Events for Fitness and Outdoor Gear", "url": "https://example.com/business-news/academy-fitness-outdoor-clearance-1238500206/", "page": 13 },
+    { "headline": "GameStop Corp. Reviews Performance of Holiday Console and Accessory Bundles", "url": "https://example.com/business-news/gamestop-holiday-bundle-performance-1238500207/", "page": 13 },
+    { "headline": "Vail Resorts, Inc. Monitors Visitor Trends as Peak Ski Season Begins", "url": "https://example.com/business-news/vail-resorts-peak-season-visitor-trends-1238500208/", "page": 13 },
+    { "headline": "Topgolf Callaway Brands Corp. Extends Holiday-Themed Gameplay Through New Year’s Weekend", "url": "https://example.com/business-news/topgolf-holiday-gameplay-extension-1238500209/", "page": 13 },
+    { "headline": "Ollie's Bargain Outlet Holdings, Inc. Prepares New-Year Bargain Events Across Stores", "url": "https://example.com/business-news/ollies-preps-new-year-bargains-1238500210/", "page": 13 }
+  ]
+}
