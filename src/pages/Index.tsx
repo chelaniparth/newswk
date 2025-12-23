@@ -53,15 +53,30 @@ const Index = () => {
       try {
         setLoading(true);
 
-        // 1. Fetch Articles
-        const articlesResponse = await supabase
-          .from('articles')
-          .select('*')
-          .order('created_at', { ascending: false });
+        const [analystsResponse, articlesResponse] = await Promise.all([
+          supabase.from('analysts').select('*').order('name'),
+          supabase.from('articles').select('*').order('created_at', { ascending: false })
+        ]);
 
-        if (articlesResponse.error) {
-          console.error('Error fetching articles:', articlesResponse.error);
-        } else if (articlesResponse.data) {
+        // 1. Process Analysts first to get company list
+        let fetchedCompanies: string[] = [];
+        if (analystsResponse.data) {
+          const dbAnalysts: Analyst[] = analystsResponse.data.map((item: any) => ({
+            id: item.id,
+            name: item.name,
+            companies: item.companies || []
+          }));
+          setAnalysts(dbAnalysts);
+          fetchedCompanies = [...new Set(dbAnalysts.flatMap(a => a.companies))];
+          setCompanies(fetchedCompanies);
+        } else {
+          setAnalysts(DEFAULT_ANALYSTS);
+          fetchedCompanies = [...new Set(DEFAULT_ANALYSTS.flatMap(a => a.companies))];
+          setCompanies(fetchedCompanies);
+        }
+
+        // 2. Process Articles using the fetched companies
+        if (articlesResponse.data) {
           const sbArticles: Article[] = articlesResponse.data.map((item: any) => ({
             headline: item.headline,
             url: item.url,
@@ -72,23 +87,27 @@ const Index = () => {
             created_at: item.created_at
           }));
 
-          // Process articles immediately after fetching
           const cleanedArticles = sbArticles
             .filter(article => !isNavigationLink(article.headline, article.url))
             .map(article => {
               const headline = normalizeHeadline(article.headline);
-              // Companies will be extracted based on allAnalystCompanies once analysts are loaded
+              // CRITICAL: Detect companies immediately before first render
+              const detectedCompanies = extractCompanies(headline, fetchedCompanies);
+
+              const existingCompanies = article.companies || [];
+              const mergedCompanies = [...new Set([...existingCompanies, ...detectedCompanies])];
+
               return {
                 ...article,
                 headline,
-                category: article.category || undefined, // Keep existing category if present
-                // companies will be re-evaluated after analysts are loaded
+                category: article.category || undefined,
+                companies: mergedCompanies,
               };
             });
 
           setArticles(cleanedArticles);
 
-          // Create a synthetic NewsData object for the legacy parts of the app
+          // Create synthetic NewsData
           const syntheticNewsData: NewsData = {
             source: 'Supabase',
             url: '',
@@ -97,33 +116,9 @@ const Index = () => {
             total: articlesResponse.data.length,
             pages: 1,
             timestamp: new Date().toISOString(),
-            articles: cleanedArticles // Use cleaned articles for newsData
+            articles: cleanedArticles
           };
           setNewsData(syntheticNewsData);
-        }
-
-        // 2. Fetch Analysts
-        const analystsResponse = await supabase
-          .from('analysts')
-          .select('*')
-          .order('name');
-
-        if (analystsResponse.error) {
-          console.error('Error fetching analysts:', analystsResponse.error);
-          // Fallback to default if DB fetch fails (or table doesn't exist yet)
-          setAnalysts(DEFAULT_ANALYSTS);
-        } else if (analystsResponse.data && analystsResponse.data.length > 0) {
-          const dbAnalysts: Analyst[] = analystsResponse.data.map((item: any) => ({
-            id: item.id,
-            name: item.name,
-            companies: item.companies || []
-          }));
-          setAnalysts(dbAnalysts);
-        } else {
-          // If DB is empty, maybe fallback? or just leave empty?
-          // User provided local data, so let's use DEFAULT_ANALYSTS if DB is empty to avoid broken UI
-          // during transition.
-          if (analystsResponse.data.length === 0) setAnalysts(DEFAULT_ANALYSTS);
         }
 
       } catch (err) {
@@ -135,19 +130,6 @@ const Index = () => {
 
     fetchData();
   }, []); // Run once on mount
-
-  // Re-tag articles with companies once allAnalystCompanies is available (after analysts are fetched)
-  useEffect(() => {
-    if (articles.length > 0 && allAnalystCompanies.length > 0) {
-      setArticles(prevArticles => prevArticles.map(article => {
-        const detectedCompanies = extractCompanies(article.headline, allAnalystCompanies);
-        return {
-          ...article,
-          companies: detectedCompanies,
-        };
-      }));
-    }
-  }, [articles.length, allAnalystCompanies]); // Depend on articles.length to trigger after initial fetch, and allAnalystCompanies
 
   // Get current analyst's companies for filtering
   const currentAnalystCompanies = useMemo(() => {
