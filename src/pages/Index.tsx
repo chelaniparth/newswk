@@ -274,7 +274,12 @@ const Index = () => {
     let result = articles.filter(article => {
       // Unclassified Filter
       if (showUnclassifiedOnly) {
-        const hasCategory = article.category && article.category !== "N/A" && article.category !== "Category...";
+        const categoryCallback = (c: string | null | undefined) => {
+          if (!c) return false;
+          const normalized = c.toLowerCase().trim();
+          return !["n/a", "category...", "category", "unknown"].includes(normalized);
+        };
+        const hasCategory = categoryCallback(article.category);
         const hasCompanies = article.companies && article.companies.length > 0;
         if (hasCategory || hasCompanies) return false;
       }
