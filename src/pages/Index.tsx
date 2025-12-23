@@ -281,8 +281,11 @@ const Index = () => {
           return !["n/a", "category...", "category", "unknown"].includes(normalized);
         };
         const hasCategory = categoryCallback(article.category);
-        const hasCompanies = article.companies && article.companies.length > 0;
-        if (hasCategory || hasCompanies) return false;
+
+        // Only filter out if it HAS a valid category. 
+        // We ignore companies because they are auto-detected, and an article 
+        // with a company but no category should still be considered "Unclassified" (needs review).
+        if (hasCategory) return false;
       }
 
       // Search filter
