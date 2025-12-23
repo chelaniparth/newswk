@@ -278,14 +278,16 @@ const Index = () => {
           if (!c) return false;
           const normalized = c.toLowerCase().trim();
           if (!normalized) return false;
-          return !["n/a", "category...", "category", "unknown"].includes(normalized);
+          // Catch "Category...", "Category…", "Select Category" etc
+          if (normalized.includes("category")) return false;
+          return !["n/a", "unknown", "uncategorized"].includes(normalized);
         };
         const hasCategory = categoryCallback(article.category);
+        const hasCompanies = article.companies && article.companies.length > 0;
 
-        // Only filter out if it HAS a valid category. 
-        // We ignore companies because they are auto-detected, and an article 
-        // with a company but no category should still be considered "Unclassified" (needs review).
-        if (hasCategory) return false;
+        // Filter out if it HAS a valid category OR companies.
+        // User considers an article "Classified" if it has at least one company tag or a category.
+        if (hasCategory || hasCompanies) return false;
       }
 
       // Search filter
