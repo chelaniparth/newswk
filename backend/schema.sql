@@ -5,10 +5,13 @@ create table public.articles (
   url text not null unique,
   headline text not null,
   source text,
+  author text,
   page_number integer,
+  page integer,
   category text,
   companies text[], -- Array of strings for company names
   published_at timestamp with time zone,
+  publish_date timestamp with time zone,
   
   -- Add constraints or indexes if needed
   constraint articles_url_key unique (url)

@@ -274,7 +274,7 @@ const Index = () => {
     let result = articles.filter(article => {
       // Unclassified Filter
       if (showUnclassifiedOnly) {
-        const hasCategory = !!article.category;
+        const hasCategory = article.category && article.category !== "N/A" && article.category !== "Category...";
         const hasCompanies = article.companies && article.companies.length > 0;
         if (hasCategory || hasCompanies) return false;
       }
