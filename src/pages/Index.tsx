@@ -277,6 +277,7 @@ const Index = () => {
         const categoryCallback = (c: string | null | undefined) => {
           if (!c) return false;
           const normalized = c.toLowerCase().trim();
+          if (!normalized) return false;
           return !["n/a", "category...", "category", "unknown"].includes(normalized);
         };
         const hasCategory = categoryCallback(article.category);

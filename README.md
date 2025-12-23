@@ -1,73 +1,57 @@
-# Welcome to your Lovable project
+# News Classifier Pro
 
-## Project info
+A professional news classification dashboard built with React, TypeScript, and Supabase.
 
-**URL**: https://lovable.dev/projects/1b4b2412-a394-4fdb-94e7-edb50f8f21b6
+## Project Overview
 
-## How can I edit this code?
+News Classifier Pro scrapes business news articles (e.g., from WWD), classifies them by category and company, and provides a powerful filtering interface for analysts.
 
-There are several ways of editing your application.
+**Key Features:**
+- **Automated Scraping:** Python-based scraper (`backend/wwd_scraper.py`) fetches latest news.
+- **Smart Filtering:** Filter by Date (Calendar/Presets), Company, Analyst, Source, and Category.
+- **Unclassified Management:** Dedicated filter to identify and tag unclassified articles.
+- **Analyst Portfolios:** Assign analysts to specific companies for personalized views.
+- **Supabase Backend:** Robust PostgreSQL database with Row Level Security (RLS).
 
-**Use Lovable**
+## Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/1b4b2412-a394-4fdb-94e7-edb50f8f21b6) and start prompting.
+- **Frontend:** Vite, React, TypeScript, Tailwind CSS, Shadcn UI
+- **Backend:** Supabase (PostgreSQL), Python (Selenium Scraper)
+- **State Management:** React Query, React Hooks
 
-Changes made via Lovable will be committed automatically to this repo.
+## Setup Instructions
 
-**Use your preferred IDE**
+### 1. Prerequisites
+- Node.js & npm
+- Python 3.8+ (for scraper)
+- Supabase Account
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 2. Frontend Setup
+```bash
+# Install dependencies
+npm install
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### 3. Backend (Scraper) Setup
+Navigate to the `backend/` directory:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+# Install Python dependencies
+pip install selenium supabase webdriver_manager
 
-**Use GitHub Codespaces**
+# Run the scraper
+python wwd_scraper.py
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Database Schema
 
-## What technologies are used for this project?
+The project uses two main tables in Supabase:
+- `articles`: Stores news content (headline, url, source, metadata).
+- `analysts`: Stores analyst profiles and their assigned companies.
 
-This project is built with:
+## License
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/1b4b2412-a394-4fdb-94e7-edb50f8f21b6) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Private / Internal Tool
