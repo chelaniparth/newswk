@@ -285,8 +285,8 @@ const Index = () => {
         const hasCategory = categoryCallback(article.category);
         const hasCompanies = article.companies && article.companies.length > 0;
 
-        // Filter out if it HAS a valid category OR companies.
-        // User considers an article "Classified" if it has at least one company tag or a category.
+        // CLASSIFIED if: Has a valid Category OR Has valid Companies
+        // UNCLASSIFIED if: No Category AND No Companies
         if (hasCategory || hasCompanies) return false;
       }
 
