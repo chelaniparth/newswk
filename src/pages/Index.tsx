@@ -6,7 +6,7 @@ import { UploadDialog } from "@/components/UploadDialog";
 import { Article, NewsData, DEFAULT_CATEGORIES } from "@/types/news";
 import { Analyst, DEFAULT_ANALYSTS } from "@/types/analyst";
 import { Inbox } from "lucide-react";
-import { isNavigationLink, normalizeHeadline, extractCompanies } from "@/utils/textUtils";
+import { isNavigationLink, normalizeHeadline, extractCompanies, classifyCategory } from "@/utils/textUtils";
 
 import { supabase } from "@/lib/supabaseClient";
 import { isSameDay, isSameMonth, parseISO } from "date-fns";
@@ -98,10 +98,16 @@ const Index = () => {
               const existingCompanies = article.companies || [];
               const mergedCompanies = [...new Set([...existingCompanies, ...detectedCompanies])];
 
+              // Auto-classify category if missing
+              let finalCategory = article.category;
+              if (!finalCategory || finalCategory === "N/A" || finalCategory === "Category..." || finalCategory.trim() === "") {
+                finalCategory = classifyCategory(headline);
+              }
+
               return {
                 ...article,
                 headline,
-                category: article.category || undefined,
+                category: finalCategory || undefined,
                 companies: mergedCompanies,
               };
             });
