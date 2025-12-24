@@ -134,7 +134,24 @@ export const DEFAULT_ANALYSTS: Analyst[] = [
       "TJX Companies", "TJX", "The TJX Companies, Inc.", "T.J. Maxx", "Marshalls", "HomeGoods",
       "Ulta Beauty", "Ulta", "Ulta Beauty, Inc.",
       "Victoria's Secret", "Victoria's Secret & Co.",
-      "Zumiez", "Zumiez Inc."
+      "Zumiez", "Zumiez Inc.",
+      // Added based on user feedback (Luxury/Fashion)
+      "Kering", "Gucci", "Saint Laurent", "Bottega Veneta", "Balenciaga", "Alexander McQueen",
+      "LVMH", "Louis Vuitton", "Dior", "Christian Dior", "Celine", "Fendi", "Givenchy", "Tiffany & Co.", "Sephora",
+      "PVH", "PVH Corp.", "Calvin Klein", "Tommy Hilfiger",
+      "Capri Holdings", "Capri", "Versace", "Jimmy Choo", "Michael Kors",
+      "Tapestry", "Coach", "Kate Spade", "Stuart Weitzman",
+      "Ralph Lauren", "Ralph Lauren Corporation",
+      "Estee Lauder", "The Estée Lauder Companies", "Estée Lauder",
+      "Prada", "Prada Group", "Miu Miu",
+      "Hermès", "Hermes",
+      "Armani", "Giorgio Armani", "Armani Group",
+      "Chanel",
+      "Burberry",
+      "Moncler",
+      "Ganni",
+      "Rachel Zoe",
+      "Bessent"
     ]
   },
   {

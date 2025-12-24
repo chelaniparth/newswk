@@ -67,7 +67,13 @@ const Index = () => {
             companies: item.companies || []
           }));
           setAnalysts(dbAnalysts);
-          fetchedCompanies = [...new Set(dbAnalysts.flatMap(a => a.companies))];
+
+          // Merge DB companies + DEFAULT_ANALYSTS companies to ensure we catch everything
+          // (e.g. if DB is outdated but local code has new Luxury brands)
+          const dbCompanies = dbAnalysts.flatMap(a => a.companies);
+          const defaultCompanies = DEFAULT_ANALYSTS.flatMap(a => a.companies);
+          fetchedCompanies = [...new Set([...dbCompanies, ...defaultCompanies])];
+
           setCompanies(fetchedCompanies);
         } else {
           setAnalysts(DEFAULT_ANALYSTS);
