@@ -1,4 +1,4 @@
-# News Classifier Pro
+# News Classifier
 
 A professional news classification dashboard built with React, TypeScript, and Supabase.
 
