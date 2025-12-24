@@ -1,4 +1,5 @@
 export interface Article {
+  id?: number; // Added optional ID for database updates
   headline: string;
   url: string;
   page: number;

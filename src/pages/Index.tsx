@@ -78,6 +78,7 @@ const Index = () => {
         // 2. Process Articles using the fetched companies
         if (articlesResponse.data) {
           const sbArticles: Article[] = articlesResponse.data.map((item: any) => ({
+            id: item.id, // Map ID
             headline: item.headline,
             url: item.url,
             page: item.page_number || 1,
@@ -210,8 +211,22 @@ const Index = () => {
     ));
   };
 
-  const handleArticleCategoryChange = (index: number, category: string) => {
+  const handleArticleCategoryChange = async (index: number, category: string) => {
     updateArticle(index, { category });
+
+    // Persist to Supabase
+    const article = articles[index];
+    if (article.id) {
+      const { error } = await supabase
+        .from('articles')
+        .update({ category })
+        .eq('id', article.id);
+
+      if (error) {
+        console.error("Error updating category:", error);
+        // Optionally revert local state here if strict consistency is needed
+      }
+    }
   };
 
   const handleArticleCompanyToggle = (index: number, company: string) => {
