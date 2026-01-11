@@ -371,37 +371,7 @@ const Index = () => {
     );
   }
 
-  if (!newsData) {
-    return (
-      <>
-        <div className="min-h-screen flex items-center justify-center bg-background">
-          <div className="text-center space-y-6 px-6">
-            <div className="space-y-3">
-              <Inbox className="w-16 h-16 mx-auto text-muted-foreground" />
-              <h1 className="text-4xl font-serif font-bold text-foreground">
-                News Classifier
-              </h1>
-              <p className="text-lg text-muted-foreground max-w-md">
-                Upload your scraped news data to start classifying articles by category and company
-              </p>
-            </div>
-            <button
-              onClick={() => setUploadOpen(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-news text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity shadow-elevated"
-            >
-              <Inbox className="w-5 h-5" />
-              Upload JSON File
-            </button>
-          </div>
-        </div>
-        <UploadDialog
-          open={uploadOpen}
-          onOpenChange={setUploadOpen}
-          onDataLoaded={handleDataLoaded}
-        />
-      </>
-    );
-  }
+
 
   return (
     <>
