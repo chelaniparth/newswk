@@ -352,6 +352,13 @@ def send_to_supabase(articles):
     try:
         supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
         
+        # Deduplicate scraped articles by URL (keep first occurrence)
+        unique_scraped = {}
+        for a in articles:
+            if a['url'] not in unique_scraped:
+                unique_scraped[a['url']] = a
+        articles = list(unique_scraped.values())
+
         # Deduplicate against DB
         existing_urls = get_existing_urls_from_supabase(supabase)
         new_articles = [a for a in articles if a['url'] not in existing_urls]

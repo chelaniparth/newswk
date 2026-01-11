@@ -67,13 +67,40 @@ export const classifyCategory = (headline: string): string | undefined => {
   const lower = headline.toLowerCase();
 
   const rules: Record<string, string[]> = {
-    "Mergers & Acquisitions": ["acquisition", " acquires ", " to buy ", "bought", "merger", "takeover", "buyout", "stake in"],
-    "Human Resources": ["ceo", "appointed", "names", "executive", "president", "resigns", "steps down", "hired", "chief", "officer", "joins as"],
-    "Financial": ["quarter", "earnings", "revenue", "sales", "profit", "results", "growth", "losses", "shares", "stock", "ipo"],
-    "Retail": ["store", "opens", "launch", "popup", "flagship", "expansion", "retail", "shop"],
-    "Legal": ["sues", "lawsuit", "legal", "court", "trademark", "ban", "regulation"],
-    "Technology": ["ai ", "metaverse", "digital", "tech ", "software", "app ", " e-commerce"],
-    "Deals": ["partnership", "collab", "deal", "agreement"]
+    "Mergers & Acquisitions": [
+      "acquisition", " acquires ", " to buy ", "bought", "merger", "takeover", "buyout", "stake in",
+      " to acquire ", "acquired", "selling to", "sold to", "purchase of"
+    ],
+    "Human Resources": [
+      "ceo", "appointed", "names", "executive", "president", "resigns", "steps down", "hired", "chief", "officer", "joins as",
+      "cfo", "coo", "cto", "cmo", "vp", "director", "head of", "succeeds", "replacement", "departure", "exit"
+    ],
+    "Financial": [
+      "quarter", "earnings", "revenue", "sales", "profit", "results", "growth", "losses", "shares", "stock", "ipo",
+      "fiscal", "guidance", "outlook", "dividend", "buyback", "valuation", "debt", "bankruptcy", "chapter 11"
+    ],
+    "Retail": [
+      "store", "opens", "launch", "popup", "flagship", "expansion", "retail", "shop",
+      "boutique", "location", "mall", "outlet", "brick-and-mortar", "closing", "shutter"
+    ],
+    "Legal": [
+      "sues", "lawsuit", "legal", "court", "trademark", "ban", "regulation",
+      "litigation", "judge", "ruling", "settlement", "fine", "penalty", "compliance"
+    ],
+    "Technology": [
+      "ai ", "metaverse", "digital", "tech ", "software", "app ", " e-commerce",
+      "cyber", "online", "virtual", "innovation", "big data", "cloud computing", "saas"
+    ],
+    "Deals": [
+      "partnership", "collab", "deal", "agreement",
+      "joint venture", "alliance", "contract", "license", "licensing"
+    ],
+    "Sustainability": [
+      "sustainable", "sustainability", "eco-friendly", "carbon", "green", "recycle", "circular", "environment"
+    ],
+    "Supply Chain": [
+      "supply chain", "logistics", "shipping", "freight", "inventory", "sourcing", "manufacturing", "factory"
+    ]
   };
 
   for (const [category, keywords] of Object.entries(rules)) {
@@ -86,10 +113,12 @@ export const classifyCategory = (headline: string): string | undefined => {
 
 /**
  * Extract company names from headline with progressive matching (longest match wins)
+ * CASE SENSITIVE to avoid false positives (e.g. "Target" vs "target")
  */
 export const extractCompanies = (headline: string, companyList: string[]): string[] => {
   let found: string[] = [];
-  const lowerHeadline = headline.toLowerCase();
+
+  // Note: We do NOT lowerCase the headline anymore for matching
 
   // Sort companies by length (long to short) to prioritize "Armani Group" over "Armani"
   const sortedCompanies = [...companyList].sort((a, b) => b.length - a.length);
@@ -97,10 +126,12 @@ export const extractCompanies = (headline: string, companyList: string[]): strin
   sortedCompanies.forEach(company => {
     // Escape special regex characters
     const escaped = company.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    // Match whole word boundaries generally, but be flexible
-    const regex = new RegExp(`\\b${escaped}\\b`, 'i');
 
-    if (regex.test(lowerHeadline)) {
+    // Match whole word boundaries
+    // Removed 'i' flag for case sensitivity
+    const regex = new RegExp(`\\b${escaped}\\b`);
+
+    if (regex.test(headline)) {
       found.push(company);
     }
   });
